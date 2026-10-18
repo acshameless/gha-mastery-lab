@@ -1,0 +1,52 @@
+name: "02 - Job Dependency Graph"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Simulate lint
+        run: |
+          echo "Lint started"
+          sleep 10
+          echo "Lint finished"
+
+  test:
+    name: Unit tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Simulate tests
+        run: |
+          echo "Tests started"
+          sleep 15
+          echo "Tests finished"
+
+  package:
+    name: Package
+    needs: [lint, test]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Build package
+        run: echo "Building package"
+
+  report:
+    name: Report
+    needs: [lint, test, package]
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Show job results
+        env:
+          LINT_RESULT: ${{ needs.lint.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          PACKAGE_RESULT: ${{ needs.package.result }}
+        run: |
+          printf 'lint: %s\n' "$LINT_RESULT"
+          printf 'test: %s\n' "$TEST_RESULT"
+          printf 'package: %s\n' "$PACKAGE_RESULT"
