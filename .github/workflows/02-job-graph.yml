@@ -21,11 +21,12 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-24.04
     steps:
-      - name: Simulate tests
+      - name: Simulate a failing test
         run: |
           echo "Tests started"
-          sleep 15
-          echo "Tests finished"
+          sleep 5
+          echo "Tests failed"
+          exit 1
 
   package:
     name: Package
