@@ -25,8 +25,7 @@ jobs:
         run: |
           echo "Tests started"
           sleep 5
-          echo "Tests failed"
-          exit 1
+          echo "Tests finished"
 
   package:
     name: Package
